@@ -39,7 +39,7 @@ const Hero = () => {
             Join the action, showcase your skills, 
             and transform ideas into breakthroughs - be part of CodeBizz now!
           </p>
-          <Button href="register" >
+          <Button href="#register" >
             Register Now
           </Button>
         </div>
