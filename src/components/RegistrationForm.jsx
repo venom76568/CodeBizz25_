@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const RegistrationForm = () => {
   const [teamData, setTeamData] = useState({
     teamName: "",
-    teamMembers: 4,
+    teamMembers: 4, // Default team size is 4
     members: Array(5).fill({
       fullName: "",
       email: "",
@@ -21,12 +21,17 @@ const RegistrationForm = () => {
 
   const handleChange = (e, index, field) => {
     const updatedMembers = [...teamData.members];
-    updatedMembers[index][field] = e.target.value;
+    updatedMembers[index] = {
+      ...updatedMembers[index],
+      [field]: e.target.value,
+    };
     setTeamData({ ...teamData, members: updatedMembers });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Sending team data:", teamData); // Debugging the data before sending
+
     try {
       const response = await fetch("http://localhost:5000/register", {
         method: "POST",
@@ -53,7 +58,9 @@ const RegistrationForm = () => {
           }),
         });
       } else {
-        setMessage("Registration failed. Please try again.");
+        const errorData = await response.json();
+        console.error("Error:", errorData);
+        setMessage(errorData.message || "Registration failed.");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -69,7 +76,6 @@ const RegistrationForm = () => {
         background: "linear-gradient(to bottom right, #0a0010, #000000)",
       }}
     >
-      {/* Tech-Inspired Purple Heading */}
       <h1
         className="text-4xl md:text-5xl font-bold text-center mb-10"
         style={{
@@ -81,7 +87,6 @@ const RegistrationForm = () => {
         Team Registration
       </h1>
 
-      {/* Registration Form */}
       <div className="bg-gray-900 p-6 rounded-lg shadow-xl w-full max-w-3xl border border-purple-800">
         <h2 className="text-2xl font-bold text-center text-purple-400 mb-6">
           Register Your Team
@@ -96,7 +101,6 @@ const RegistrationForm = () => {
           </p>
         )}
         <form onSubmit={handleSubmit}>
-          {/* Team Name */}
           <div className="mb-4">
             <label
               htmlFor="teamName"
@@ -109,13 +113,14 @@ const RegistrationForm = () => {
               id="teamName"
               name="teamName"
               value={teamData.teamName}
-              onChange={(e) => setTeamData({ ...teamData, teamName: e.target.value })}
+              onChange={(e) =>
+                setTeamData({ ...teamData, teamName: e.target.value })
+              }
               className="w-full px-3 py-2 mt-1 bg-black text-purple-300 border border-purple-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-700"
               required
             />
           </div>
 
-          {/* Number of Team Members */}
           <div className="mb-4">
             <label
               htmlFor="teamMembers"
@@ -141,16 +146,19 @@ const RegistrationForm = () => {
             </select>
           </div>
 
-          {/* Member Buttons */}
           <div className="mb-6">
-            <p className="text-purple-400 mb-4">Click to edit member details:</p>
+            <p className="text-purple-400 mb-4">
+              Click to edit member details:
+            </p>
             <div className="flex gap-4 justify-center">
-              {Array.from({ length: 5 }).map((_, index) => (
+              {Array.from({ length: teamData.teamMembers }).map((_, index) => (
                 <button
                   key={index}
                   type="button"
                   className="py-2 px-4 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-lg"
-                  onClick={() => setActiveMember(activeMember === index ? null : index)}
+                  onClick={() =>
+                    setActiveMember(activeMember === index ? null : index)
+                  }
                 >
                   Member {index + 1}
                 </button>
@@ -158,7 +166,6 @@ const RegistrationForm = () => {
             </div>
           </div>
 
-          {/* Member Detail Subform */}
           {activeMember !== null && (
             <div className="border border-purple-700 p-4 rounded-lg mb-4">
               <h3 className="text-purple-400 font-bold text-lg mb-4">
@@ -195,7 +202,6 @@ const RegistrationForm = () => {
             </div>
           )}
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-2 px-4 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-lg transition duration-300"
@@ -205,7 +211,6 @@ const RegistrationForm = () => {
         </form>
       </div>
 
-      {/* Pulse Animation Keyframes */}
       <style>
         {`
           @keyframes pulseDarkerPurple {
