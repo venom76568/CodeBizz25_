@@ -10,6 +10,7 @@
 
 :root {
   --font-sora: "Doto", serif;
+  font-weight: bold;
   --font-sora1:"Metal Mania", serif;
   --font-code: "Source Code Pro", monospace;
   --font-grotesk: "Space Grotesk", sans-serif;

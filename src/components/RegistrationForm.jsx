@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Section from "./Section";
 
 const RegistrationForm = () => {
   const [teamData, setTeamData] = useState({
@@ -72,7 +73,7 @@ const RegistrationForm = () => {
   };
 
   return (
-    <section
+    <Section
       id="register"
       className="min-h-screen flex flex-col items-center justify-center"
       style={{
@@ -222,7 +223,8 @@ const RegistrationForm = () => {
           }
         `}
       </style>
-    </section>
+    </Section>
+    
   );
 };
 
